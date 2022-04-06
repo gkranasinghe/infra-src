@@ -1,21 +1,14 @@
-# inventory/hosts
+# inventory/hosts      
 [master_nodes]
-test1    ip_address=10.150.19.10
+master0    ip_address=10.150.19.10
+
 
 [worker_nodes]
-kworker1   ip_address=10.150.19.111
-kworker2   ip_address=10.150.19.112
-kworker3   ip_address=10.150.19.113
-kworker4   ip_address=10.150.19.114
-kworker5   ip_address=10.150.19.115
-kworker6   ip_address=10.150.19.116
-
-[nfs_nodes]
-nfsserver    ip_address=10.150.19.130
+worker0    ip_address=10.150.19.20
+worker1    ip_address=10.150.19.21
 
 [all:vars]
 ansible_connection=lxd
 ansible_python_interpreter=/usr/bin/python3
 hosttempfile_location=/home/gk
 
-[newworker_nodes]

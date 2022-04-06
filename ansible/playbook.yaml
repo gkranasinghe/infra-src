@@ -1,4 +1,4 @@
-- hosts: test1
+- hosts: master0
   become: true
   become_method: sudo
   become_user: root
