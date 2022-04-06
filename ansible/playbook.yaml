@@ -1,5 +1,4 @@
-- hosts: master0
-  become: true
-  become_method: sudo
-  become_user: root
-  gather_facts: true
+- import_playbook: k8patchlxdnodes.yaml
+- import_playbook: k8setup.yaml
+- import_playbook: k8nfsserver.yaml
+

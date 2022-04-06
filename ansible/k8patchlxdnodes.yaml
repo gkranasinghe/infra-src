@@ -1,0 +1,24 @@
+- hosts: master_nodes:worker_nodes
+  # remote_user: ubuntu
+  become: true
+  become_method: sudo
+  become_user: root
+  gather_facts: true
+  connection: ssh
+  tasks:
+     - name: Hack required to provision K8s v1.15+ in LXC containers
+       shell: |
+               sudo apt install -qq -y net-tools
+               sudo mknod /dev/kmsg c 1 11
+               echo 'mknod /dev/kmsg c 1 11' | sudo tee  /etc/rc.local
+               sudo chmod +x /etc/rc.local
+         
+     - name: patch to shared mount propagation to run calico node 
+       shell: sudo mount --make-rshared /
+
+     - name: patch to create symlink for /dev/kmsg for kubelet proper functionality
+       shell: |
+               echo 'L /dev/kmsg - - - - /dev/console' > /etc/tmpfiles.d/kmsg.conf
+               
+     - name: prepare nodes to connect to nfs server
+       shell: sudo   apt install -y nfs-common

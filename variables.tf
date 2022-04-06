@@ -7,6 +7,11 @@ variable "worker_count" {
   default = 2
 }
 
+variable "nfs_count" {
+  type    = number
+  default = 1
+}
+
 variable "lxd_cidr" {
   type    = string
   default = "10.150.19.1/24"
