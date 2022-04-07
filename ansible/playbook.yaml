@@ -2,3 +2,10 @@
 # - import_playbook: k8setup.yaml
 # - import_playbook: k8nfsserver.yaml
 
+- hosts: all
+  gather_facts: False
+  tasks:
+    - name: test
+      shell: uname -a
+      register: out
+    - debug: var=out

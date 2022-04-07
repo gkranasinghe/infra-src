@@ -31,7 +31,7 @@ resource "lxd_container" "master" {
 
 
     working_dir = var.ansible_dir
-    command     = " ansible-playbook -i ${tolist(self.device)[0].properties["ipv4.address"]}  playbook.yaml  "
+    command     = " ansible-playbook -i ${self.name},  playbook.yaml -e \"ansible_connection=lxd ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=~/\" -vv "
    # on_failure = fail
   }
 
@@ -72,7 +72,7 @@ depends_on = [
 
 
     working_dir = var.ansible_dir
-    command     = " ansible-playbook -i ${tolist(self.device)[0].properties["ipv4.address"]}  playbook.yaml  "
+    command     = " ansible-playbook -i ${self.name},  playbook.yaml -e \"ansible_connection=lxd ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=~/\" -vv "
     on_failure = fail
   }
 
@@ -109,7 +109,7 @@ resource "lxd_container" "nfsserver" {
 
 
     working_dir = var.ansible_dir
-    command     = "ansible-playbook -i ${tolist(self.device)[0].properties["ipv4.address"]}  playbook.yaml"
+    command     = "ansible-playbook -i ${self.name},  playbook.yaml -e \"ansible_connection=lxd ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=~/\" -vv "
     # on_failure = fail
   }
 
