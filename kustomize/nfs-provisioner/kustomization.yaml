@@ -1,0 +1,7 @@
+resources:
+- base
+
+patches:
+- path: default-storageclass-patch.yaml
+  target:
+    kind: StorageClass

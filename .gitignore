@@ -1,1 +1,2 @@
 kubernetes_join_command
+./kustomize/charts

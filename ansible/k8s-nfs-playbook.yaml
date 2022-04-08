@@ -25,68 +25,10 @@
                sudo systemctl enable --now nfs-server
                sudo exportfs -ar
 
-# - hosts: master_nodes:worker_nodes
-#   # remote_user: ubuntu
-#   become: yes
-#   become_method: sudo
-#   become_user: root
-#   gather_facts: yes
-#   connection: ssh
-
-#   tasks:
-#     - name: prepare nodes to connect to nfs server
-#       shell: sudo   apt install -y nfs-common
-
-
-# - hosts: localhost
-#   become: yes
-#   become_method: sudo
-#   become_user: gk
-#   vars:
-#      helm_chart_url: "https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner"
-#   tasks:
-#    - name: Add helm repo nfs-subdir-external-provisioner
-#      kubernetes.core.helm_repository:
-#       name: nfs-subdir-external-provisioner
-#       repo_url: "{{ helm_chart_url }}"
-
-
-  
-
-
-# - hosts: localhost
-#   become: yes
-#   become_method: sudo
-#   become_user: gk
-#   tasks:
-#      - name: Create a k8s namespace
-#        kubernetes.core.k8s:
-#           name: nfs-provisioner
-#           api_version: v1
-#           kind: Namespace
-#           state: present
-
-#      - name: Install nfs-subdir-external-provisioner
-#        kubernetes.core.helm:
-#          name: nfs-subdir-external-provisioner
-#          namespace: nfs-provisioner
-#          chart_ref: nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
-#          values:
-#           nfs:
-#             server: "{{ hostvars['nfsserver0].ip_address }}"
-#             path: /nfs-storage
 
 
 
 
-# # TODO kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
-#      - name: patch storageclass nfs-client as default storage class 
-#        kubernetes.core.k8s:
-#           state: patched
-#           kind: StorageClass
-#           name: nfs-client
-#           definition:
-#             metadata:
-#               annotations:
-#                 storageclass.kubernetes.io/is-default-class: "true"
+
+
