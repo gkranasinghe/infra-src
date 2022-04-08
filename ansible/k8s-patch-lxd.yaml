@@ -4,7 +4,7 @@
   become_method: sudo
   become_user: root
   gather_facts: true
-  connection: ssh
+  connection: lxd
   tasks:
      - name: Hack required to provision K8s v1.15+ in LXC containers
        shell: |

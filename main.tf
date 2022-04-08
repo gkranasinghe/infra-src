@@ -31,7 +31,7 @@ resource "lxd_container" "master" {
 
 
     working_dir = var.ansible_dir
-    command     = " ansible-playbook -i ${self.name},  playbook.yaml -e \"ansible_connection=lxd ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=~/\" -vv "
+    command     = " ansible-playbook -i ${self.name},  k8s-master-playbook.yaml -e \" ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=$PWD\" -vv "
    # on_failure = fail
   }
 
@@ -72,7 +72,7 @@ depends_on = [
 
 
     working_dir = var.ansible_dir
-    command     = " ansible-playbook -i ${self.name},  playbook.yaml -e \"ansible_connection=lxd ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=~/\" -vv "
+    command     = " ansible-playbook -i ${self.name},  k8s-worker-playbook.yaml -e \" ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=$PWD\" -vv "
     on_failure = fail
   }
 
@@ -109,7 +109,7 @@ resource "lxd_container" "nfsserver" {
 
 
     working_dir = var.ansible_dir
-    command     = "ansible-playbook -i ${self.name},  playbook.yaml -e \"ansible_connection=lxd ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=~/\" -vv "
+    command     = "ansible-playbook -i ${self.name},    k8s-nfs-playbook.yaml -e \"ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=$PWD\" -vv "
     # on_failure = fail
   }
 
@@ -118,7 +118,7 @@ resource "lxd_container" "nfsserver" {
 }
 
 resource "local_file" "inventory" {
-  filename = "ansible/inventory/hosts"
+  filename = "${var.ansible_dir}/inventory/hosts"
   
       content = <<EOT
 # inventory/hosts      
@@ -143,4 +143,6 @@ EOT
 
    
 }
+
+//TODO null resource with patch playbook via local-exec
 
