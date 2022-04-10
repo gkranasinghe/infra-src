@@ -1,5 +1,4 @@
 - hosts: master_nodes:worker_nodes
-  # remote_user: ubuntu
   become: true
   become_method: sudo
   become_user: root

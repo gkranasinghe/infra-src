@@ -1,0 +1,13 @@
+resources:
+- base
+
+patchesStrategicMerge:
+- config-map-patch.yaml
+
+patchesJson6902:
+- target:
+    version: v1
+    kind: Service
+    name: argocd-server
+    namespace: argocd
+  path: service-type-lb-patch.yaml

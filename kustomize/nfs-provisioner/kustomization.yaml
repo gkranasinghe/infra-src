@@ -1,7 +1,6 @@
 resources:
 - base
 
-patches:
-- path: default-storageclass-patch.yaml
-  target:
-    kind: StorageClass
+patchesStrategicMerge:
+- default-storageclass-patch.yaml
+

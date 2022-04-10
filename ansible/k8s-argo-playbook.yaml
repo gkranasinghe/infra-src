@@ -1,0 +1,9 @@
+
+- hosts:
+  - localhost
+  tasks:
+
+     - name: change to kustomize file directory for argocd
+       shell: |
+            cd /home/gk/projects/infra-src/kustomize/argocd
+            kustomize build .  --enable-helm |kubectl apply -f -

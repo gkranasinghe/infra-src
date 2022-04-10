@@ -103,7 +103,7 @@ resource "lxd_container" "nfsserver" {
 
 
   limits = {
-    cpu = 1
+    cpu = 2
   }
   provisioner "local-exec" {
 

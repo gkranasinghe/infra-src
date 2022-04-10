@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: "metallb-system"
+resources:
+ - "namespace.yaml"
+
+
+helmCharts:
+- name: metallb
+  repo: https://metallb.github.io/metallb
+  namespace: "metallb-system"
+  releaseName: "metallb"
+  valuesInline: 
+          configInline:
+            address-pools:
+            - name: default
+              protocol: layer2
+              addresses:
+              - 10.150.19.240-10.150.19.250
