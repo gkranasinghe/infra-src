@@ -2,8 +2,8 @@ resource "lxd_profile" "profile1" {
   name = "profile1"
 
   config = {
-    "limits.cpu"           = "2"
-    "limits.memory"        = "2GB"
+    "limits.cpu"           = "4"
+    "limits.memory"        = "6GB"
     "limits.memory.swap"   = "false"
     "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
     "raw.lxc"              = "lxc.mount.entry = /dev/kmsg dev/kmsg none defaults,bind,create=file\nlxc.apparmor.profile=unconfined\nlxc.cap.drop=\nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw sys:rw"
