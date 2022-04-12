@@ -4,13 +4,13 @@ variable "master_count" {
 }
 variable "worker_count" {
   type    = number
-  default = 2
+  default = 3
 }
 
-variable "nfs_count" {
-  type    = number
-  default = 1
-}
+# variable "nfs_count" {
+#   type    = number
+#   default = 1
+# }
 
 variable "lxd_cidr" {
   type    = string
