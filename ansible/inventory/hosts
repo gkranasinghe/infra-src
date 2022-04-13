@@ -3,8 +3,10 @@
 master0    ip_address=10.150.19.10
 
 
-
-
+[worker_nodes]
+worker0    ip_address=10.150.19.20
+worker1    ip_address=10.150.19.21
+worker2    ip_address=10.150.19.22
 
 
 [all:vars]

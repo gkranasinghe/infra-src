@@ -1,3 +1,4 @@
+
 resource "lxd_profile" "profile1" {
   name = "profile1"
 
@@ -5,7 +6,7 @@ resource "lxd_profile" "profile1" {
     "limits.cpu"           = "4"
     "limits.memory"        = "6GB"
     "limits.memory.swap"   = "false"
-    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter"
+    "linux.kernel_modules" = "ip_tables,ip6_tables,nf_nat,overlay,br_netfilter,rbd"
     "raw.lxc"              = "lxc.mount.entry = /dev/kmsg dev/kmsg none defaults,bind,create=file\nlxc.apparmor.profile=unconfined\nlxc.cap.drop=\nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw sys:rw"
     "security.nesting"     = "true"
     "security.privileged"  = "true"
@@ -30,4 +31,16 @@ resource "lxd_profile" "profile1" {
       path = "/"
     }
   }
-}
+
+
+    device {
+    type = "unix-block"
+    name = "nvme0n1p4"
+
+    properties = {
+      source = "/dev/nvme0n1p4"
+      path = "/dev/nvme0n1p4"
+    }
+  }
+
+  }
