@@ -1,0 +1,10 @@
+[Unit]
+Description=Job that runs your user script to patch lxd
+
+[Service]
+ExecStart=/bin/bash /root/patch.sh
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
