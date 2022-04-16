@@ -1,9 +1,0 @@
-helmCharts:
-- name: nfs-subdir-external-provisioner
-  repo: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
-  releaseName: nfs-subdir-external-provisioner
-  valuesInline: 
-    nfs:
-            server: "{{ hostvars['nfsserver'].ip_address }}"
-            path: /nfs-storage
-

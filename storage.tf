@@ -1,6 +1,7 @@
 
 resource "lxd_storage_pool" "pool1" {
   name   = "mypool"
+
   driver = "zfs"
   config = {
     source = "/dev/nvme0n1p4"

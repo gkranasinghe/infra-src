@@ -45,7 +45,7 @@ resource "lxd_profile" "profile2" {
     name = "nvme0n1p5"
     type = "unix-block"
     properties = {
-      path   = "/mount/point/in/container"
+
       source = "/dev/nvme0n1p5"
       path   = "/mnt/nvme0n1p5"
     }
