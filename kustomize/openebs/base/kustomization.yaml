@@ -10,11 +10,11 @@ helmCharts:
   repo: https://openebs.github.io/dynamic-localpv-provisioner
   namespace: "openebs"
   releaseName: openebs-localpv
-  valuesInline: 
-    openebsNDM:
-            enabled: "false"
-    deviceClass:
-            enabled: "false"
+  # valuesInline: 
+    # openebsNDM:
+    #         enabled: "false"
+    # deviceClass:
+    #         enabled: "false"
 
 
 
