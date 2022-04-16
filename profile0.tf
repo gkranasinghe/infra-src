@@ -35,4 +35,4 @@ resource "lxd_profile" "profile0" {
 
 
 
-  }
+}

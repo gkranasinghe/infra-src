@@ -32,13 +32,23 @@ resource "lxd_profile" "profile3" {
     }
   }
 
-      device {
-    type = "unix-block"
-    name = "nvme0n1p6"
 
+  device {
+    name = "volume1"
+    type = "disk"
     properties = {
+      path   = "/mount/point/in/container"
+      source = "${lxd_volume.volume1.name}"
+      pool   = "${lxd_storage_pool.pool1.name}"
+    }
+  }
+  device {
+    name = "nvme0n1p6"
+    type = "unix-block"
+    properties = {
+      path   = "/mount/point/in/container"
       source = "/dev/nvme0n1p6"
-      path = "/dev/nvme0n1p6"
+      path   = "/mnt/nvme0n1p6"
     }
   }
 }

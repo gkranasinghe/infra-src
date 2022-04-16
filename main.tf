@@ -1,8 +1,8 @@
 resource "lxd_container" "master" {
-  
+
   count = var.master_count
   name  = "master${count.index}"
-  
+
   image     = "ubuntu:20.04"
   ephemeral = false
   profiles  = ["${lxd_profile.profile0.name}"]
@@ -32,23 +32,23 @@ resource "lxd_container" "master" {
 
     working_dir = var.ansible_dir
     command     = " ansible-playbook -i ${self.name},  k8s-master-playbook.yaml -e \" ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=$PWD\" -vv "
-   # on_failure = fail
+    # on_failure = fail
   }
 
 
 }
 
 resource "lxd_container" "worker" {
-depends_on = [
-  lxd_container.master
-]
+  depends_on = [
+    lxd_container.master
+  ]
   count = var.worker_count
   name  = "worker${count.index}"
-  
+
   image     = "ubuntu:20.04"
   ephemeral = false
-  
-  profiles = distinct([count.index == 0  ? "profile1" : "profile0",count.index == 1  ? "profile2" : "profile0",count.index == 2 ? "profile3": "profile0"])
+
+  profiles = distinct([count.index == 0 ? "profile1" : "profile0", count.index == 1 ? "profile2" : "profile0", count.index == 2 ? "profile3" : "profile0"])
 
   config = {
     "boot.autostart" = true
@@ -63,15 +63,7 @@ depends_on = [
       "ipv4.address" = "10.150.19.2${count.index}"
     }
   }
-  #   device {
-  #   type = "unix-block"
-  #   name = "osd${count.index + 4 }"
 
-  #   properties = {
-  #     source = "/dev/nvme0n1p${count.index+4 }"
-  #     path = "/dev/nvme0n1p${count.index+4 }"
-  #   }
-  # }
 
   limits = {
     cpu = 2
@@ -82,7 +74,7 @@ depends_on = [
 
     working_dir = var.ansible_dir
     command     = " ansible-playbook -i ${self.name},master0  k8s-worker-playbook.yaml -e \" ansible_python_interpreter=/usr/bin/python3  hosttempfile_location=$PWD\" -vv "
-    on_failure = fail
+    on_failure  = fail
   }
 
 
