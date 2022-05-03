@@ -1,2 +1,10 @@
 kubernetes_join_command
 ./kustomize/charts
+
+
+
+*terraform*
+*terraform*/*
+
+./kustomize/*
+./kustomize/

@@ -79,3 +79,43 @@ resource "lxd_container" "worker" {
 
 
 }
+
+resource "lxd_container" "nfs" {
+
+  count = var.nfs_count
+  name  = "nfsserver${count.index}"
+
+  image     = "ubuntu:20.04"
+  ephemeral = false
+  profiles  = ["${lxd_profile.nfs-server.name}"]
+
+  config = {
+    "boot.autostart" = true
+  }
+  device {
+    name = "eth0"
+    type = "nic"
+
+    properties = {
+      nictype        = "bridged"
+      parent         = "${lxd_network.new_default.name}"
+      "ipv4.address" = "10.150.19.3${count.index}"
+    }
+  }
+
+
+  limits = {
+    cpu = 2
+  }
+
+
+  provisioner "local-exec" {
+
+
+    working_dir = var.ansible_dir
+    command     = " ansible-playbook -i ${self.name},  k8s-nfs-playbook.yaml -e \" ansible_python_interpreter=/usr/bin/python3 nfs_source=${var.nfs_source} hosttempfile_location=$PWD\" -vv "
+    # on_failure = fail
+  }
+
+
+}

@@ -1,6 +1,6 @@
 
-resource "lxd_profile" "profile1" {
-  name = "profile1"
+resource "lxd_profile" "nfs-server" {
+  name = "nfs-server"
 
   config = {
     "limits.cpu"           = "4"
@@ -31,7 +31,15 @@ resource "lxd_profile" "profile1" {
       path = "/"
     }
   }
+    device {
+    type = "unix-block"
+    name = "nfs-storage"
 
+    properties = {
+      source = var.nfs_source
+ 
+    }
+  }
 
 
 

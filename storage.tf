@@ -1,35 +1,12 @@
 
-resource "lxd_storage_pool" "pool1" {
-  name   = "mypool"
+# resource "lxd_storage_pool" "nfs-pool" {
+#   name   = "nfs-pool"
 
-  driver = "zfs"
-  config = {
-    source = "/dev/nvme0n1p4"
-  }
-}
-
-resource "lxd_volume" "volume1" {
-  name = "myvolume"
-  pool = lxd_storage_pool.pool1.name
-}
-
-# resource "lxd_storage_pool" "zfspool_worker2" {
-#   target = "worker2"
-
-#   name = "zfspool0"
 #   driver = "zfs"
 #   config = {
-#     source = "/dev/nvme0n1p4"
+#     source = "/dev/disk/by-id/nvme-Micron_2200V_MTFDHBA512TCK__19402444B82D-part7"
 #   }
 # }
 
-# # resource "lxd_storage_pool" "zfspool0" {
-# #   depends_on = [
-# #     lxd_storage_pool.zfspool_worker1,
-# #     lxd_storage_pool.zfspool_worker2,
-# #   ]
 
-# #   name = "zfspool0"
-# #   driver = "zfs"
 
-# # }

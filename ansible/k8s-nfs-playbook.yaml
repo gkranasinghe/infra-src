@@ -12,6 +12,7 @@
        shell: |
                sudo apt-get update && sudo apt-get install -y nfs-server
                sudo mkdir -p /nfs-storage
+               sudo mount {{nfs_source}}  /nfs-storage
 
 
      - name: Add NFS access rights for k8 cluster nodes 
@@ -33,5 +34,5 @@
 
      - name: change to kustomize file directory for nfs-server
        shell: |
-            cd /home/gk/projects/infra-src/kustomize/nfs-provisioner
-            kustomize build .   --enable-helm |kubectl apply -f -
+               cd ../kustomize/nfs-provisioner
+               kustomize build .   --enable-helm |kubectl apply -f -

@@ -73,7 +73,7 @@
     - name: install kubernetes
       shell: |
               sudo apt-get update
-              sudo apt-get install -y kubeadm=1.22.0-00 kubelet=1.22.0-00 kubectl=1.22.0-00
+              sudo apt-get install -y kubeadm=1.21.0-00 kubelet=1.21.0-00 kubectl=1.21.0-00
               sudo apt-mark hold kubelet kubeadm kubectl
 
     - name: disable swap for kubelet 

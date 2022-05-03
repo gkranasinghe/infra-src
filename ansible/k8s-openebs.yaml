@@ -1,0 +1,23 @@
+- hosts: worker_nodes
+  become: true
+  become_method: sudo
+  become_user: root
+  gather_facts: true
+  connection: lxd
+  tasks:
+     - name: Add iscsid 
+       shell: |
+               sudo apt-get update
+               sudo apt-get install open-iscsi -y
+               sudo systemctl enable --now iscsid
+
+
+
+- hosts:
+  - localhost
+  tasks:
+
+     - name: change to kustomize file directory for openebs
+       shell: |
+            cd /home/gk/projects/infra-src/kustomize/openebs
+            kustomize build .  --enable-helm |kubectl apply -f -
