@@ -6,5 +6,3 @@ kubernetes_join_command
 *terraform*
 *terraform*/*
 
-./kustomize/*
-./kustomize/

@@ -81,6 +81,9 @@ resource "lxd_container" "worker" {
 }
 
 resource "lxd_container" "nfs" {
+  depends_on = [
+    lxd_container.master
+  ]
 
   count = var.nfs_count
   name  = "nfsserver${count.index}"
