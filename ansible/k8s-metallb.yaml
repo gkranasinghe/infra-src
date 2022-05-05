@@ -1,0 +1,8 @@
+- hosts:
+  - localhost
+  tasks:
+
+     - name: change to kustomize file directory for metallb
+       shell: |
+               cd ../kustomize/metallb
+               kustomize build .   --enable-helm |kubectl apply -f -
