@@ -3,13 +3,13 @@
   - localhost
   tasks:
        - name: add kustomize3.2.1
-       shell: |
+         shell: |
                 wget https://github.com/kubernetes-sigs/kustomize/releases/download/v3.2.0/kustomize_3.2.0_linux_amd64
                 chmod +x kustomize_3.2.0_linux_amd64
                 sudo mv kustomize_3.2.0_linux_amd64 /usr/local/bin/kustomize3
 
-     - name: apply kubeflow with kustomize3.2.1
-       shell: |
+       - name: apply kubeflow with kustomize3.2.1
+         shell: |
                 rm -rf ./kubeflow/manifests/*
                 git clone https://github.com/kubeflow/manifests.git
                 cd ./kubeflow/manifests 

@@ -3,13 +3,13 @@
   - localhost
   tasks:
 
-    #  - name: Add lxd monitoring 
-    #    shell: |
+    # - name: Add lxd monitoring 
+    #   shell: |
     #             docker run -d --name lxd-dashboard -p 80:80 -e ADMIN_PASS="lxdware" -v ~/lxdware:/var/lxdware --restart=always lxdware/dashboard:1.2.8
 
-    #  - name: Add k8s dashboard 
-    #    shell: |
-    #             kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.1/aio/deploy/recommended.yaml
+    - name: Add k8s dashboard 
+      shell: |
+                kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.1/aio/deploy/recommended.yaml
 
 
     - name: Create kube-dashboard-admin.yaml
@@ -49,3 +49,4 @@
     - name: Add k8s dashboard 
       shell: |
                 kubectl apply -f /tmp/kube-dashboard-admin.yaml
+                kubectl -n kube-system get secret $(kubectl get sa kube-dashboard-admin -n kube-system  -o=jsonpath='{.secrets[].name}')  -o=jsonpath='{.data.token}' |base64 --decode> token.txt
