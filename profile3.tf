@@ -27,7 +27,7 @@ resource "lxd_profile" "profile3" {
     name = "root"
 
     properties = {
-      pool = "zfs-pool"
+      pool = "default"
       path = "/"
     }
   }
