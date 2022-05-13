@@ -8,25 +8,66 @@
 
   tasks:
 
-     - name: install nfs-server
-       shell: |
-               sudo apt-get update && sudo apt-get install -y nfs-server
-               sudo mkdir -p /nfs-storage
-               sudo mount {{nfs_source}}  /nfs-storage
+      - name: install nfs-server
+        shell: |
+                sudo apt-get update && sudo apt-get install -y nfs-server
+                sudo mkdir -p /nfs-storage
+                sudo mount {{nfs_source}}  /nfs-storage
 
 
-     - name: Add NFS access rights for k8 cluster nodes 
-       lineinfile:
-         path: "/etc/exports"
-         line: |
-               /nfs-storage *(rw,no_subtree_check,no_root_squash)
+      - name: Add NFS access rights for k8 cluster nodes 
+        lineinfile:
+          path: "/etc/exports"
+          line: |
+                /nfs-storage *(rw,no_subtree_check,no_root_squash)
 
-     - name: enable nfs-server
-       shell: |
+      - name: enable nfs-server
+        shell: |
                sudo systemctl enable --now nfs-server
                sudo exportfs -ar
 
+      - name: Create a new file with permissions
+        file:
+            path: "/root/patch.sh"
+            state: touch
+            mode: 0755
+            owner: root
 
+      - name: add patch.sh file  content
+        copy:
+            dest: "/root/patch.sh"
+            content: |
+                #!/bin/bash
+                sudo mount {{nfs_source}}  /nfs-storage
+
+      - name: Create a new service file  with permissions
+        file:
+            path: "/etc/systemd/system/patch.service"
+            state: touch
+            mode: 0777
+            owner: root
+
+      - name: add patch.service file  content
+        copy:
+            dest: "/etc/systemd/system/patch.service"
+            content: |
+                  [Unit]
+                  Description=Job that runs your user script to patch lxd
+
+                  [Service]
+                  ExecStart=/bin/bash /root/patch.sh
+                  Type=oneshot
+                  RemainAfterExit=yes
+
+                  [Install]
+                  WantedBy=multi-user.target
+
+
+
+      - name: enable patch.service
+        shell: |
+                  sudo systemctl enable patch.service
+                  sudo systemctl start patch.service
 
 - hosts:
   - localhost
