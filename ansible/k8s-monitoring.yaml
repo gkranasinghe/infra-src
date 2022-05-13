@@ -45,8 +45,23 @@
                       name: kube-dashboard-admin
                       namespace: kube-system    
 
+    - name: wait for pods to come up
+      shell: kubectl get pods -n kube-system -o json
+      register: kubectl_get_pods
+      until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+      retries: 10
+      delay: 30
 
     - name: Add k8s dashboard 
       shell: |
                 kubectl apply -f /tmp/kube-dashboard-admin.yaml
+                kubectl patch svc kubernetes-dashboard -n kubernetes-dashboard  -p '{"spec": {"type": "LoadBalancer"}}'
                 kubectl -n kube-system get secret $(kubectl get sa kube-dashboard-admin -n kube-system  -o=jsonpath='{.secrets[].name}')  -o=jsonpath='{.data.token}' |base64 --decode> token.txt
+
+
+    - name: wait for pods to come up
+      shell: kubectl get pods -n kubernetes-dashboard  -o json
+      register: kubectl_get_pods
+      until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+      retries: 10
+      delay: 30
