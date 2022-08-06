@@ -28,5 +28,5 @@ variable "ansible_dir" {
 
 variable "nfs_source" {
   type    = string
-  default ="/dev/disk/by-id/nvme-Micron_2200V_MTFDHBA512TCK__19402444B82D-part6"
+  default ="/dev/disk/by-id/nvme-Micron_2200V_MTFDHBA512TCK__19402444B82D-part5"
 }

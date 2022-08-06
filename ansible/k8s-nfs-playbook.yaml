@@ -1,4 +1,4 @@
-- hosts:
+- hosts: 
   - nfsserver0
   become: yes
   become_method: sudo
@@ -7,19 +7,26 @@
   connection: lxd
 
   tasks:
-
       - name: install nfs-server
         shell: |
-                sudo apt-get update && sudo apt-get install -y nfs-server
+                sudo apt update -qq && sudo apt install -qq -y  nfs-server
+
+
+      - name: mount nfs_source drive to   shared file path inside container 
+        shell: |
                 sudo mkdir -p /nfs-storage
                 sudo mount {{nfs_source}}  /nfs-storage
-
+      
+      - name: Test for line
+        shell: grep -c "nfs-storage" /etc/exports || true
+        register: test_grep
 
       - name: Add NFS access rights for k8 cluster nodes 
         lineinfile:
           path: "/etc/exports"
           line: |
                 /nfs-storage *(rw,no_subtree_check,no_root_squash)
+        when: test_grep.stdout == "0"
 
       - name: enable nfs-server
         shell: |
@@ -51,16 +58,16 @@
         copy:
             dest: "/etc/systemd/system/patch.service"
             content: |
-                  [Unit]
-                  Description=Job that runs your user script to patch lxd
+                [Unit]
+                Description=Job that runs your user script to patch lxd
 
-                  [Service]
-                  ExecStart=/bin/bash /root/patch.sh
-                  Type=oneshot
-                  RemainAfterExit=yes
+                [Service]
+                ExecStart=/bin/bash /root/patch.sh
+                Type=oneshot
+                RemainAfterExit=yes
 
-                  [Install]
-                  WantedBy=multi-user.target
+                [Install]
+                WantedBy=multi-user.target
 
 
 
@@ -68,7 +75,56 @@
         shell: |
                   sudo systemctl enable patch.service
                   sudo systemctl start patch.service
+# Add pre-shutdown service 
 
+      - name: Create a new file with permissions
+        file:
+            path: "/root/pre-shutdown.sh"
+            state: touch
+            mode: 0755
+            owner: root
+
+      - name: add pre-shutdown.sh file  content
+        copy:
+            dest: "/root/pre-shutdown.sh"
+            content: |
+              #!/bin/bash
+              echo $(date) > /root/output.txt
+
+      - name: Create a new service file  with permissions
+        file:
+            path: "/etc/systemd/system/pre-shutdown.service"
+            state: touch
+            mode: 0777
+            owner: root
+
+      - name: add pre-shutdown.service file  content
+        copy:
+            dest: "/etc/systemd/system/pre-shutdown.service"
+            content: |
+              [Unit]
+              Description=Pre-Shutdown Processes
+              DefaultDependencies=no
+              Before=shutdown.target reboot.target halt.target
+              # This works because it is installed in the target and will be
+              #   executed before the target state is entered
+              # Also consider kexec.target
+
+              [Service]
+              Type=oneshot
+              # User=smeterlink
+              # Group= smeterlink
+              ExecStart=/root/pre-shutdown.sh  # your path and filename
+
+              [Install]
+              WantedBy=halt.target reboot.target shutdown.target
+
+
+
+      - name: enable pre-shutdown.service
+        shell: |
+                  sudo systemctl enable pre-shutdown.service
+                  sudo systemctl daemon-reload
 - hosts:
   - localhost
   tasks:

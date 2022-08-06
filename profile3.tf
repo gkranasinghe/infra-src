@@ -3,6 +3,7 @@ resource "lxd_profile" "profile3" {
   name = "profile3"
 
   config = {
+
     "limits.cpu"           = "4"
     "limits.memory"        = "6GB"
     "limits.memory.swap"   = "false"

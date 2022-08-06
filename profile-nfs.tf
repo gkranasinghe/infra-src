@@ -3,6 +3,7 @@ resource "lxd_profile" "nfs-server" {
   name = "nfs-server"
 
   config = {
+
     "limits.cpu"           = "4"
     "limits.memory"        = "6GB"
     "limits.memory.swap"   = "false"
@@ -40,9 +41,5 @@ resource "lxd_profile" "nfs-server" {
  
     }
   }
-
-
-
-
 
 }

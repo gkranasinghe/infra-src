@@ -8,7 +8,7 @@ resource "lxd_container" "master" {
   profiles  = ["${lxd_profile.profile0.name}"]
 
   config = {
-    "boot.autostart" = true
+    "boot.autostart" = false
   }
   device {
     name = "eth0"
@@ -51,7 +51,7 @@ resource "lxd_container" "worker" {
   profiles = distinct([count.index == 0 ? "profile1" : "profile0", count.index == 1 ? "profile2" : "profile0", count.index == 2 ? "profile3" : "profile0"])
 
   config = {
-    "boot.autostart" = true
+    "boot.autostart" = false
   }
   device {
     name = "eth0"
@@ -65,9 +65,11 @@ resource "lxd_container" "worker" {
   }
 
 
-  limits = {
-    cpu = 2
-  }
+  # limits = {
+  #   cpu = 8,
+  #   memory =  "12288MB"
+
+  # }
 
   provisioner "local-exec" {
 
@@ -93,7 +95,7 @@ resource "lxd_container" "nfs" {
   profiles  = ["${lxd_profile.nfs-server.name}"]
 
   config = {
-    "boot.autostart" = true
+    "boot.autostart" = false
   }
   device {
     name = "eth0"
@@ -112,13 +114,26 @@ resource "lxd_container" "nfs" {
   }
 
 
-  provisioner "local-exec" {
+  
 
 
-    working_dir = var.ansible_dir
-    command     = " ansible-playbook -i ${self.name},  k8s-nfs-playbook.yaml -e \" ansible_python_interpreter=/usr/bin/python3 nfs_source=${var.nfs_source} hosttempfile_location=$PWD\" -vv "
-    # on_failure = fail
-  }
+
+
 
 
 }
+
+resource "null_resource" "nfs_source" {
+  # Changes to any instance of the cluster requires re-provisioning
+  triggers = {
+    nfs_source = var.nfs_source
+  }
+  provisioner "local-exec" {
+    working_dir = var.ansible_dir
+    command     = " ansible-playbook -i nfsserver0,  k8s-nfs-playbook.yaml -e \" ansible_python_interpreter=/usr/bin/python3 nfs_source=${var.nfs_source} hosttempfile_location=$PWD\" -vv "
+    # on_failure = fail
+  }
+  
+
+}
+

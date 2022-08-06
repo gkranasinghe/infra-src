@@ -1,8 +1,13 @@
 kubernetes_join_command
 ./kustomize/charts
 
+# Local .terraform directories
+**/.terraform/*
 
+# .tfstate files
+*.tfstate
+*.tfstate.*
 
-*terraform*
-*terraform*/*
-
+# Crash log files
+crash.log
+crash.*.log
